@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0878bd"><meta name="description" content="旅行の行程・航空便・ホテル・予約番号・地図・PDF・スクリーンショットをまとめて管理"><link rel="manifest" href="manifest.webmanifest"><script src="https://accounts.google.com/gsi/client" async defer></script><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""><title>My Travel 旅行管理</title>
+<style>
+:root{--b:#0878bd;--b2:#0b91d5;--navy:#064e80;--bg:#f4f8fb;--card:#fff;--text:#153047;--muted:#667b8d;--line:#dbe7ef;--red:#d64545;--green:#16835b;--shadow:0 5px 18px #0c4b7314}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}header{position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,var(--navy),var(--b));color:#fff;padding:12px 14px;box-shadow:0 2px 10px #003b5a33}.bar{max-width:1100px;margin:auto;display:flex;gap:10px;align-items:center}.bar h1{font-size:19px;margin:0}.sub{font-size:10px;opacity:.85}.bar .grow{flex:1}main{max-width:1100px;margin:auto;padding:12px 12px 88px}.view{display:none}.view.active{display:block}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:11px}.toolbar h2{margin:0;flex:1;font-size:18px}.btn{border:0;border-radius:11px;padding:10px 14px;min-height:44px;min-width:92px;background:var(--b);color:#fff;font-weight:750;touch-action:manipulation;font-size:13px}.btn.secondary{background:#e7f3fa;color:#075b8f}.btn.ghost{background:#fff;color:var(--b);border:1px solid #b9d9eb}.btn.danger{background:#fff0f0;color:var(--red)}.btn.small{padding:10px 14px;min-height:44px;min-width:92px;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);padding:14px}.trip{overflow:hidden;padding:0}.cover{height:78px;background:linear-gradient(135deg,#1376a8,#79c8e7);color:#fff;padding:12px;display:flex;align-items:end;font-size:18px;font-weight:800}.trip .body{padding:7px}.trip .actions{gap:8px;margin-top:6px;align-items:center}.trip .actions .btn{min-width:92px;min-height:44px;text-align:center}.trip .actions .btn.danger{margin-left:auto}.meta{font-size:12px;color:var(--muted)}.pill{display:inline-block;background:#e9f5fb;color:#06669c;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700;margin:2px}.tabs{display:flex;gap:5px;background:#e7f1f7;padding:5px;border-radius:12px;margin-bottom:10px}.tab{flex:1;border:0;background:transparent;border-radius:8px;padding:8px;color:#4c6678;font-weight:700}.tab.active{background:#fff;color:var(--b);box-shadow:0 2px 8px #0b5d7a20}.timeline{display:flex;flex-direction:column;gap:4px}.item{background:#fff;border:1px solid var(--line);border-radius:13px;padding:7px 10px;display:grid;grid-template-columns:60px 1fr auto;gap:10px;align-items:center;box-shadow:0 2px 9px #0b55720b}.item.past-item{filter:grayscale(1);opacity:.52;background:#eef1f3;color:#65727b;box-shadow:none}.item.past-item .date,.item.past-item .detail{color:#7d8990}.item.past-item .type{filter:grayscale(1)}.date{font-weight:800;color:var(--b);font-size:12px}.title{font-weight:800}.detail{font-size:12px;color:var(--muted);margin-top:3px}.type{width:33px;height:33px;display:inline-grid;place-items:center;border-radius:9px;background:#e9f5fb;font-size:17px;vertical-align:middle}.type.flight{background:#e6f1ff}.type.hotel{background:#fff1e8}.type.tour{background:#e9f8ef}.type.transport{background:#f0ebff}.type.train{background:#eef6ff}.type.bus{background:#fff4e6}.type.ship{background:#e7f8ff}.type.spot{background:#fff8d9}.type.other{background:#eef1f4}.form{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;box-shadow:var(--shadow)}.fg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted);font-weight:750}.field input,.field select,.field textarea{width:100%;border:1px solid #c9d9e4;border-radius:9px;padding:9px;background:#fff;color:var(--text)}.field textarea{min-height:90px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;align-items:center}.actions .btn{min-width:92px;min-height:44px}.actions .btn.danger{margin-left:auto}.notice{border-left:4px solid var(--b);background:#eef8fd;padding:9px 11px;border-radius:8px;font-size:11px;color:#365b70}.empty{text-align:center;background:#fff;border:1px dashed #bcd1df;border-radius:15px;padding:28px;color:var(--muted)}.kv{display:grid;grid-template-columns:120px 1fr}.kv div{padding:8px 0;border-bottom:1px solid var(--line);word-break:break-word}.kv .k{color:var(--muted);font-size:11px}.kv .v{font-weight:650}.attach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.att{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}.att img{width:100%;height:105px;object-fit:cover;display:block}.att .att-body{padding:6px}.att .name{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.att.pdf{padding:8px}.att.pdf .pdf-icon{font-size:32px}.map-wrap{position:relative}.map{height:58vh;min-height:420px;border-radius:14px;border:1px solid var(--line);overflow:hidden}.map-note{background:#fff;border:1px solid var(--line);padding:8px 10px;border-radius:9px;color:var(--muted);font-size:10px;margin-top:7px}.map-tools{position:absolute;right:10px;top:10px;z-index:500;display:flex;gap:5px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:1100}.bottom nav{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr)}.bottom button{border:0;background:#fff;padding:7px 2px;color:#667b8d;font-size:10px}.bottom button.active{color:var(--b);font-weight:800}.ico{display:block;font-size:18px}.modal{position:fixed;inset:0;background:#0008;z-index:2000;display:none;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(760px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:15px}.sheet-head{display:flex;gap:8px;align-items:center}.sheet-head h3{flex:1;margin:0}.x{border:0;background:#edf3f6;border-radius:50%;width:34px;height:34px}.toast{position:fixed;left:50%;bottom:75px;transform:translateX(-50%);background:#17384d;color:#fff;padding:9px 13px;border-radius:999px;z-index:3000;font-size:11px;display:none}.toast.show{display:block}.readonly{filter:grayscale(.1);opacity:.92}.status{font-size:11px;padding:5px 8px;border-radius:999px;background:#eaf8ef;color:#17704f}.status.off{background:#fff2e5;color:#9b5b10}.checklist{display:grid;gap:5px}.checklist label{font-size:12px}.search{display:flex;gap:7px}.search input{flex:1;border:1px solid #c9d9e4;border-radius:9px;padding:9px}.muted{color:var(--muted);font-size:11px}@media(max-width:680px){.actions{gap:8px}.actions .btn,.trip .actions .btn{min-width:92px;min-height:44px}.actions .btn.danger,.trip .actions .btn.danger{margin-left:auto}.trip .actions .btn.danger{min-width:92px;margin-top:0;margin-left:auto}.grid{grid-template-columns:1fr}.fg{grid-template-columns:1fr}.field.full{grid-column:auto}.item{grid-template-columns:45px 1fr auto}.kv{grid-template-columns:100px 1fr}.attach-grid{grid-template-columns:repeat(2,1fr)}.sub{display:none}}
+.attach-grid .att-body,.attach-grid .att.pdf{display:flex;flex-direction:column;gap:6px}.attach-grid .btn{width:auto;align-self:flex-start}.trip .actions{align-items:center}@media(max-width:680px){.trip .actions{display:flex;flex-wrap:wrap;gap:8px}.trip .actions .btn{min-width:92px;min-height:44px}.trip .actions .btn.danger{min-width:92px;margin-left:auto}.actions .btn.danger{margin-left:auto}}
+</style></head><body>
+<header><div class="bar"><div style="font-size:24px">✈️</div><div class="grow"><h1>My Travel</h1><div class="sub">旅行・予約・地図・書類・写真をひとつに</div></div><span id="appVersion" class="status" title="アプリバージョン">v33</span><span id="net" class="status">オンライン</span></div></header>
+<main>
+<section id="home" class="view active"><div class="toolbar"><h2>旅行一覧</h2></div><div id="tripGrid" class="grid"></div></section>
+<section id="tripView" class="view"><div class="toolbar"><button class="btn ghost small" id="homeBtn">← 一覧</button><h2 id="tripName"></h2><button class="btn small" id="addItemBtn">＋ 予定</button></div><div class="tabs"><button class="tab active" data-tab="it">日程</button><button class="tab" data-tab="day">1日表示</button><button class="tab" data-tab="map">地図</button></div><div id="itPanel"></div><div id="dayPanel" style="display:none"></div><div id="mapPanel" style="display:none"><div class="map-wrap"><div id="map" class="map"></div><div class="map-tools"><button class="btn small" id="locBtn">📍現在地</button><button class="btn secondary small" id="routeBtn">経路</button></div></div><div class="map-note">緯度・経度が登録されている予定は種類を問わず地点として表示します。ホテル・観光地は場所名からも補完します。自宅を始点・終点にして、予定順に最短方向の直線で結びます。© OpenStreetMap contributors。</div></div></section>
+<section id="detailView" class="view"><div class="toolbar"><button class="btn ghost small" id="backTrip">← 行程</button><h2>詳細</h2></div><div id="detailPanel"></div></section>
+<section id="settings" class="view"><div class="toolbar"><h2>設定・その他</h2></div><div class="form"><div class="notice">予約情報・PDF・スクリーンショット・写真は端末内に保存できます。重要書類はGoogle Drive等にも別途バックアップすることをおすすめします。</div><div class="notice" style="margin-top:10px"><b>🌐 オフライン対応</b><br>このWeb版はHTTPS上で一度読み込んでおけば、ネット接続がない場所でも旅行データの閲覧・追加・編集・削除を利用できます。Google Driveとの保存・取得、Google OAuth認証、外部地図タイルなど通信が必要な機能はオンライン時に行ってください。</div><h3>端末モード</h3><div class="notice">2台で同じ旅行データを使う場合、メイン端末（A）を編集モード、2台目（B）を閲覧専用モードにします。選択したモードはこの端末に保存されます。</div><div class="actions"><button class="btn secondary" id="roleEditBtn">📱 メイン端末（A）・編集モード</button><button class="btn ghost" id="roleViewerBtn">📱 スレイブ端末（B）・閲覧モード</button></div><p id="roleStatus" class="muted"></p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>自宅（出発・最終到着地点）</h3><div class="notice">旅行のルートは、ここに登録した自宅を必ず出発地点と最終到着地点にします。正確な緯度・経度を一度だけ入力してください。</div><div class="fg" style="margin-top:10px"><div class="field"><label>自宅の緯度</label><input id="homeLat" placeholder="例：35.68"></div><div class="field"><label>自宅の経度</label><input id="homeLng" placeholder="例：139.65"></div></div><div class="actions"><button class="btn secondary" id="saveHomeCoords">🏠 自宅座標を保存</button></div><p id="homeCoordStatus" class="muted"></p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>データ同期（Google Drive）</h3><div class="notice">Google Driveを共通の保存場所として使います。メイン端末（A）で編集したデータを「Google Driveへ保存」、スレイブ端末（B）で「Google Driveから取得」します。両方で同じGoogleアカウントと同じGoogle OAuthクライアントIDを使用してください。</div><div class="field" style="margin-top:10px"><label>Google OAuth クライアントID（Webアプリ）</label><input id="googleClientId" placeholder="xxxxx.apps.googleusercontent.com"></div><div class="actions"><button class="btn secondary" id="driveConnectBtn">☁️ Google Driveに接続</button><button class="btn" id="driveUploadBtn">☁️ Google Driveへ保存</button><button class="btn ghost" id="driveDownloadBtn">☁️ Google Driveから取得</button></div><p id="driveStatus" class="muted">未接続</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>アプリ更新</h3><div class="notice">この表示が <b>v33</b> になっていることを確認してください。古い画面が残っている場合は「最新版に更新」を押してください。旅行データ・PDF・スクリーンショットは削除しません。</div><div class="actions"><button class="btn secondary" id="updateAppBtn">🔄 最新版に更新</button></div><p id="updateStatus" class="muted">現在のバージョン：v33</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>データ</h3><div class="actions"><button class="btn" id="exportBtn">JSONバックアップ</button><button class="btn secondary" id="importBtn">JSON復元</button><button class="btn ghost" id="icsBtn">カレンダー用ICS</button><input id="importFile" type="file" accept="application/json" hidden></div><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>共有・通知</h3><div class="actions"><button class="btn secondary" id="shareBtn">旅行を共有</button><button class="btn secondary" id="notifyBtn">通知を許可</button></div><p class="muted">通知はこの端末・ブラウザの権限と動作状況に依存します。完全なバックグラウンド通知には通知サーバー等が必要です。</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>使い方</h3><div class="checklist"><label>✓ 予定の詳細からPDF・スクリーンショット・写真を追加</label><label>✓ 画像は一覧からタップして拡大、PDFはタップして表示</label><label>✓ 「🔎自動入力」でPDF・スクリーンショットから予約番号・日付・便名などを抽出</label><label>✓ 「📍現在地」で現在地を地図に表示</label><label>✓ 住所がある項目からGoogleマップで開く</label><label>✓ JSONバックアップで端末変更時に復元</label></div><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><button class="btn danger" id="clearBtn">全データ削除</button></div></section>
+</main>
+<div class="bottom"><nav><button data-nav="home" class="active"><span class="ico">🏠</span>ホーム</button><button data-nav="trip"><span class="ico">📅</span>行程</button><button data-nav="map"><span class="ico">🗺️</span>地図</button><button data-nav="settings"><span class="ico">⚙️</span>設定</button><button id="quickAdd"><span class="ico">＋</span>追加</button></nav></div>
+<div id="modal" class="modal"><div class="sheet"><div class="sheet-head"><h3 id="modalTitle">追加</h3><button class="x" id="closeModal">✕</button></div><div id="modalBody"></div></div></div><div id="toast" class="toast"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+<script>
+const CITY={
+ 'サンティアゴ':[-33.4525,-70.6586],'サンペドロ・デ・アタカマ':[-22.9108,-68.2001],'ウユニ':[-20.4628,-66.8239],'ラパス':[-16.5,-68.15],'リマ':[-12.05,-77.05],'クスコ':[-13.5239,-71.9786],'ブエノスアイレス':[-34.6037,-58.3816],'サンパウロ':[-23.5505,-46.6333],'リオデジャネイロ':[-22.9068,-43.1729],'イグアス':[-25.6953,-54.4367],
+ 'シンガポール':[1.3521,103.8198],'名古屋':[35.1815,136.9066],'大阪':[34.6937,135.5023],'東京':[35.6762,139.6503],'カイロ':[30.0444,31.2357],'イスタンブール':[41.0082,28.9784],'シドニー':[-33.8688,151.2093],
+ '札幌':[43.0618,141.3545],'函館':[41.7687,140.7291],'仙台':[38.2682,140.8694],'新潟':[37.9161,139.0364],'金沢':[36.5613,136.6562],'京都':[35.0116,135.7681],'神戸':[34.6901,135.1956],'広島':[34.3853,132.4553],'福岡':[33.5904,130.4017],'長崎':[32.7503,129.8777],'熊本':[32.8031,130.7079],'鹿児島':[31.5966,130.5571],'那覇':[26.2124,127.6809],
+ 'ホノルル':[21.3069,-157.8583],'ロサンゼルス':[34.0522,-118.2437],'サンフランシスコ':[37.7749,-122.4194],'ラスベガス':[36.1699,-115.1398],'ニューヨーク':[40.7128,-74.0060],'ワシントンD.C.':[38.9072,-77.0369],'シカゴ':[41.8781,-87.6298],'ボストン':[42.3601,-71.0589],'シアトル':[47.6062,-122.3321],'バンクーバー':[49.2827,-123.1207],'トロント':[43.6532,-79.3832],'メキシコシティ':[19.4326,-99.1332],'カンクン':[21.1619,-86.8515],
+ 'サンペドロスーラ':[15.5042,-88.0250],'グアテマラシティ':[14.6349,-90.5069],'サンサルバドル':[13.6929,-89.2182],'マナグア':[12.11499,-86.23617],'サンホセ':[9.9281,-84.0907],'パナマシティ':[8.9824,-79.5199],
+ 'ボゴタ':[4.7110,-74.0721],'メデジン':[6.2442,-75.5812],'キト':[-0.1807,-78.4678],'ガラパゴス':[-0.9538,-90.9656],'グアヤキル':[-2.170998,-79.92236],'アレキパ':[-16.4090,-71.5375],'ポトシ':[-19.5836,-65.7531],'スクレ':[-19.0333,-65.2627],'コパカバーナ':[-16.1667,-69.0833],'アスンシオン':[-25.2637,-57.5759],'エンカルナシオン':[-27.3306,-55.8667],'モンテビデオ':[-34.9011,-56.1645],'サルタ':[-24.7821,-65.4232],'メンドーサ':[-32.8895,-68.8458],'ウシュアイア':[-54.8019,-68.3030],'プンタアレナス':[-53.1638,-70.9171],'プエルトナタレス':[-51.7269,-72.4977],'イースター島':[-27.1127,-109.3497],
+ 'マドリード':[40.4168,-3.7038],'バルセロナ':[41.3874,2.1686],'リスボン':[38.7223,-9.1393],'パリ':[48.8566,2.3522],'ロンドン':[51.5074,-0.1278],'ローマ':[41.9028,12.4964],'ミラノ':[45.4642,9.1900],'ヴェネツィア':[45.4408,12.3155],'フィレンツェ':[43.7696,11.2558],'ベルリン':[52.5200,13.4050],'ミュンヘン':[48.1351,11.5820],'フランクフルト':[50.1109,8.6821],'ウィーン':[48.2082,16.3738],'プラハ':[50.0755,14.4378],'ブダペスト':[47.4979,19.0402],'アムステルダム':[52.3676,4.9041],'ブリュッセル':[50.8503,4.3517],'チューリッヒ':[47.3769,8.5417],'ジュネーブ':[46.2044,6.1432],'アテネ':[37.9838,23.7275],'ドブロブニク':[42.6507,18.0944],'ストックホルム':[59.3293,18.0686],'オスロ':[59.9139,10.7522],'オスロブ':[9.5200,123.4300],'パングラオ':[9.57806,123.74583],'Panglao':[9.57806,123.74583],'Panglao Island':[9.6,123.82],'ボホール島':[9.6,123.82],'コペンハーゲン':[55.6761,12.5683],'ヘルシンキ':[60.1699,24.9384],'レイキャビク':[64.1466,-21.9426],
+ 'ドバイ':[25.2048,55.2708],'アブダビ':[24.4539,54.3773],'ドーハ':[25.2854,51.5310],'リヤド':[24.7136,46.6753],'アンマン':[31.9539,35.9106],'テルアビブ':[32.0853,34.7818],'エルサレム':[31.7683,35.2137],'マスカット':[23.5880,58.3829],'カサブランカ':[33.5731,-7.5898],'マラケシュ':[31.6295,-7.9811],'ナイロビ':[-1.2921,36.8219],'ケープタウン':[-33.9249,18.4241],'ヨハネスブルグ':[-26.2041,28.0473],'ザンジバル':[-6.1659,39.2026],
+ 'デリー':[28.6139,77.2090],'アグラ':[27.1767,78.0081],'ムンバイ':[19.0760,72.8777],'ジャイプール':[26.9124,75.7873],'カトマンズ':[27.7172,85.3240],'ダッカ':[23.8103,90.4125],'コロンボ':[6.9271,79.8612],'モルディブ':[4.1755,73.5093],
+ 'バンコク':[13.7563,100.5018],'チェンマイ':[18.7883,98.9853],'プーケット':[7.8804,98.3923],'クアラルンプール':[3.1390,101.6869],'ペナン':[5.4141,100.3288],'ハノイ':[21.0278,105.8342],'ホーチミン':[10.8231,106.6297],'ダナン':[16.0544,108.2022],'プノンペン':[11.5564,104.9282],'シェムリアップ':[13.3671,103.8448],'ヤンゴン':[16.8409,96.1735],'マニラ':[14.5995,120.9842],'セブ':[10.3157,123.8854],'ソウル':[37.5665,126.9780],'釜山':[35.1796,129.0756],'台北':[25.0330,121.5654],'香港':[22.3193,114.1694],'マカオ':[22.1987,113.5439],'北京':[39.9042,116.4074],'上海':[31.2304,121.4737],'西安':[34.3416,108.9398],'成都':[30.5728,104.0668],'広州':[23.1291,113.2644],'シンセン':[22.5431,114.0579],
+ 'パース':[-31.9505,115.8605],'メルボルン':[-37.8136,144.9631],'ブリスベン':[-27.4698,153.0251],'ゴールドコースト':[-28.0167,153.4000],'アデレード':[-34.9285,138.6007],'ケアンズ':[-16.9186,145.7781],'ダーウィン':[-12.4634,130.8456],'オークランド':[-36.8509,174.7645],'クイーンズタウン':[-45.0312,168.6626],
+ 'モスクワ':[55.7558,37.6173],'サンクトペテルブルク':[59.9343,30.3351],'タシケント':[41.2995,69.2401],'サマルカンド':[39.6542,66.9597],'ブハラ':[39.7747,64.4286],'アルマトイ':[43.2389,76.8897],'アスタナ':[51.1694,71.4491]
+};
+function safeGet(key){try{return localStorage.getItem(key)}catch(e){return null}}
+function safeSet(key,value){try{localStorage.setItem(key,value);return true}catch(e){console.warn('localStorage write failed',e);return false}}
+function normalizeState(raw){
+  const x=raw&&typeof raw==='object'?raw:{};
+  const trips=Array.isArray(x.trips)?x.trips.filter(t=>t&&typeof t==='object').map(t=>({...t,items:Array.isArray(t.items)?t.items:[]})):[];
+  const selected=trips.some(t=>t.id===x.selectedTrip)?x.selectedTrip:null;
+  return {trips,selectedTrip:selected};
+}
+function loadState(){
+  const keys=['mytravel-v2','mytravel-state','mytravel-data'];
+  for(const key of keys){
+    const raw=safeGet(key); if(!raw)continue;
+    try{
+      const parsed=JSON.parse(raw);
+      if(parsed&&Array.isArray(parsed.trips)) return normalizeState(parsed);
+    }catch(e){console.warn('保存データの読み込みに失敗',key,e)}
+  }
+  return {trips:[],selectedTrip:null};
+}
+let state=loadState(), map=null, mapPoints=[], currentItemId=null;
+const dbp=indexedDB.open('mytravel-files-v2',1);let db;dbp.onupgradeneeded=e=>e.target.result.createObjectStore('files',{keyPath:'id'});dbp.onsuccess=e=>db=e.target.result;
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);function save(){return safeSet('mytravel-v2',JSON.stringify(normalizeState(state)))}function toast(x){const t=$('#toast');t.textContent=x;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}function trip(){return state.trips.find(x=>x.id===state.selectedTrip)}
+function show(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$('#'+v).classList.add('active');document.querySelectorAll('.bottom button[data-nav]').forEach(b=>b.classList.toggle('active',(b.dataset.nav==='home'&&v==='home')||(b.dataset.nav==='trip'&&(v==='tripView'||v==='detailView'))||(b.dataset.nav==='map'&&v==='tripView')||(b.dataset.nav==='settings'&&v==='settings')));if(v==='tripView')renderTrip()}
+function typeLabel(t){return {flight:'航空便',hotel:'ホテル',tour:'ツアー',train:'電車',bus:'バス',ship:'船',transport:'その他の移動',spot:'観光',other:'その他'}[t]||'その他'}function icon(t){return {flight:'✈️',hotel:'🏨',tour:'🧭',train:'🚆',bus:'🚌',ship:'⛴️',transport:'🚐',spot:'📷',other:'📌'}[t]||'📌'}
+function canEdit(){return localStorage.getItem('mytravel-role')!=='viewer'}
+function editGuard(){if(canEdit())return true;toast('この端末は閲覧専用モードです');return false}
+function updateRoleUI(){const v=!canEdit();document.body.classList.toggle('readonly',v);$('#roleStatus').textContent=v?'現在：👁 閲覧専用モード（登録・編集・削除・資料追加はできません）':'現在：✏️ 編集モード（登録・編集・削除ができます）';$('#roleEditBtn').classList.toggle('ghost',!v);$('#roleViewerBtn').classList.toggle('ghost',v);$('#quickAdd').style.display=v?'none':'';renderTrips()}
+function renderTrips(){const g=$('#tripGrid');if(!state.trips.length){g.innerHTML='<div class="empty" style="grid-column:1/-1">旅行がありません。<br>「＋追加」で旅行を作成してください。</div>';return}g.innerHTML=state.trips.map(t=>`<div class="card trip"><div class="cover">${esc(t.name)}</div><div class="body"><div class="meta">${esc(t.start||'')} ～ ${esc(t.end||'')}</div><div>${t.items.length}件の予定 ${t.items.filter(i=>i.type==='flight').length?'・✈️':''} ${t.items.filter(i=>i.type==='hotel').length?'・🏨':''}</div><div class="actions"><button class="btn small" onclick="openTrip('${t.id}')">開く</button>${canEdit()?`<button class="btn ghost small" onclick="editTrip('${t.id}')">編集</button><button class="btn danger small" onclick="deleteTrip('${t.id}')">削除</button>`:''}</div></div></div>`).join('')}
+function openTrip(id){state.selectedTrip=id;save();show('tripView')}function editTrip(id){if(!editGuard())return;const t=state.trips.find(x=>x.id===id);openTripForm(t)}function deleteTrip(id){if(!editGuard())return;const t=state.trips.find(x=>x.id===id);if(!t)return;if(!confirm(`「${t.name}」を削除しますか？\nこの操作は取り消せません。`))return;if(!confirm(`最終確認：\n「${t.name}」と、その中の予定をすべて削除します。\n本当に削除しますか？`))return;state.trips=state.trips.filter(x=>x.id!==id);if(state.selectedTrip===id)state.selectedTrip=null;save();renderTrips();toast('削除しました')}
+function openTripForm(t=null){if(!editGuard())return;$('#modalTitle').textContent=t?'旅行を編集':'旅行を追加';$('#modalBody').innerHTML=`<form id="tripForm" class="form"><div class="fg"><div class="field full"><label>旅行名</label><input name="name" required value="${esc(t?.name)}" placeholder="例：南米旅行 2026"></div><div class="field"><label>開始日</label><input type="date" name="start" value="${esc(t?.start)}"></div><div class="field"><label>終了日</label><input type="date" name="end" value="${esc(t?.end)}"></div><div class="field full"><label>メモ</label><textarea name="note">${esc(t?.note)}</textarea></div></div><div class="actions"><button class="btn" type="submit">保存</button></div></form>`;$('#modal').classList.add('show');$('#tripForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);if(t){t.name=f.get('name');t.start=f.get('start');t.end=f.get('end');t.note=f.get('note')}else{t={id:uid(),name:f.get('name'),start:f.get('start'),end:f.get('end'),note:f.get('note'),items:[]};state.trips.push(t);state.selectedTrip=t.id}save();close();renderTrips();if(t.id===state.selectedTrip)show('tripView')}}
+function openItemForm(item=null){if(!editGuard())return;const defaults=item||{type:'flight',title:'',date:'',endDate:'',time:'',endTime:'',booking:'',provider:'',flightNo:'',location:'',address:'',phone:'',price:'',lat:'',lng:'',notes:'',remind:false,remindAt:''};$('#modalTitle').textContent=item?'予定を編集':'予定を追加';$('#modalBody').innerHTML=`<form id="itemForm" class="form"><div class="fg"><div class="field"><label>種類</label><select name="type"><option value="flight">航空便</option><option value="tour">ツアー</option><option value="train">電車</option><option value="bus">バス</option><option value="ship">船</option><option value="hotel">ホテル</option><option value="transport">その他の移動</option><option value="spot">観光</option><option value="other">その他</option></select></div><div class="field"><label>名称</label><input name="title" required value="${esc(defaults.title)}" placeholder="例：SQ672 名古屋→シンガポール"></div><div class="field"><label>開始日</label><input type="date" name="date" value="${esc(defaults.date)}"></div><div class="field"><label>終了日</label><input type="date" name="endDate" value="${esc(defaults.endDate)}"></div><div class="field"><label>開始時刻</label><input type="time" name="time" value="${esc(defaults.time)}"></div><div class="field"><label>終了時刻</label><input type="time" name="endTime" value="${esc(defaults.endTime)}"></div><div class="field"><label>予約管理番号</label><input name="booking" value="${esc(defaults.booking)}"></div><div class="field"><label>会社・予約サイト</label><input name="provider" value="${esc(defaults.provider)}" placeholder="航空会社 / Booking.com 等"></div><div class="field"><label>便名</label><input name="flightNo" value="${esc(defaults.flightNo)}"></div><div class="field"><label>場所・都市</label><input name="location" value="${esc(defaults.location)}" placeholder="例：サンティアゴ"></div><div class="field full"><label>住所</label><input name="address" value="${esc(defaults.address)}"></div><div class="field"><label>電話</label><input name="phone" value="${esc(defaults.phone)}"></div><div class="field"><label>料金</label><input name="price" value="${esc(defaults.price)}"></div><div class="field"><label>緯度</label><input name="lat" value="${esc(defaults.lat)}" placeholder="例：-33.8688 または 33.8688 S"></div><div class="field"><label>経度</label><input name="lng" value="${esc(defaults.lng)}" placeholder="例：151.2093 または 151.2093 E"></div><div class="field full"><label>メモ</label><textarea name="notes">${esc(defaults.notes)}</textarea></div><div class="field"><label>リマインダー日時</label><input type="datetime-local" name="remindAt" value="${esc(defaults.remindAt)}"></div></div><div class="notice">ホテル・観光地は、Googleマップの場所URLから緯度・経度を自動取得できます。Googleマップで場所を開き「共有→リンクをコピー」し、下の欄に貼り付けて「Googleマップから座標取得」を押してください。都市名なら「座標設定」も利用できます。</div><div class="field full"><label>GoogleマップURL（共有リンク）</label><input name="googleMapsUrl" value="${esc(defaults.googleMapsUrl||'')}" placeholder="https://maps.google.com/... または Googleマップの共有リンク"></div><div class="actions"><button class="btn secondary" type="button" id="coordBtn">📍座標設定</button><button class="btn secondary" type="button" id="googleCoordBtn">🗺️ Googleマップから座標取得</button><button class="btn" type="submit">保存</button>${item?'<button class="btn danger" type="button" id="deleteItem">削除</button>':''}</div></form>`;$('#itemForm select[name=type]').value=defaults.type;$('#modal').classList.add('show');$('#coordBtn').onclick=async()=>{const s=($('#itemForm [name=location]').value+' '+$('#itemForm [name=address]').value).trim();const b=$('#coordBtn'),old=b.textContent;b.disabled=true;b.textContent='検索中…';try{const c=await findCityCoordsAsync(s);if(c){$('#itemForm [name=lat]').value=c[0];$('#itemForm [name=lng]').value=c[1];toast('「'+c[2]+'」の都市座標を設定しました')}else toast('都市名を確認できませんでした。日本語・英語の都市名を入力するか、Googleマップから座標を取得してください')}finally{b.disabled=false;b.textContent=old}};$('#googleCoordBtn').onclick=async()=>{const u=$('#itemForm [name=googleMapsUrl]').value.trim();const place=(($('#itemForm [name=location]').value||'')+' '+($('#itemForm [name=address]').value||'')).trim();if(!u){toast('先にGoogleマップの共有リンクを貼り付けてください');return}const b=$('#googleCoordBtn');const old=b.textContent;b.disabled=true;b.textContent='取得中…';try{const r=await resolveGoogleMapsCoords(u,place);if(r){$('#itemForm [name=lat]').value=r.coords[0];$('#itemForm [name=lng]').value=r.coords[1];toast('緯度・経度を設定しました（'+r.source+'）')}else toast('座標を取得できませんでした。Googleマップの完全URLを貼るか、場所・住所を入力してください')}finally{b.disabled=false;b.textContent=old}};$('#itemForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),o={id:item?.id||uid(),type:f.get('type'),title:f.get('title'),date:f.get('date'),endDate:f.get('endDate'),time:f.get('time'),endTime:f.get('endTime'),booking:f.get('booking'),provider:f.get('provider'),flightNo:f.get('flightNo'),location:f.get('location'),address:f.get('address'),phone:f.get('phone'),price:f.get('price'),lat:f.get('lat'),lng:f.get('lng'),notes:f.get('notes'),remindAt:f.get('remindAt'),googleMapsUrl:f.get('googleMapsUrl')};if(item)Object.assign(item,o);else trip().items.push(o);trip().items.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));save();close();renderTrip();toast('保存しました');scheduleCheck()};if(item)$('#deleteItem').onclick=()=>{if(confirm(`「${item.title}」を削除しますか？\nこの操作は取り消せません。`) && confirm(`最終確認：\n「${item.title}」を本当に削除しますか？`)){trip().items=trip().items.filter(x=>x.id!==item.id);save();close();renderTrip();toast('削除しました')}}}
+function itemEndDateTime(i){
+  if(!i||!i.date)return null;
+  const d=i.endDate||i.date; const tm=i.endTime||i.time;
+  if(!tm)return new Date(d+'T23:59:59');
+  const m=String(tm).match(/^(\d{1,2}):(\d{2})/);
+  if(!m)return new Date(d+'T23:59:59');
+  return new Date(d+'T'+String(m[1]).padStart(2,'0')+':'+m[2]+':00');
+}
+function isItemPast(i){const end=itemEndDateTime(i);return !!end&&!Number.isNaN(end.getTime())&&end.getTime()<Date.now()}
+
+function renderTrip(){const t=trip();if(!t){show('home');return}$('#tripName').textContent=t.name;$('#itPanel').innerHTML=t.items.length?'<div class="timeline">'+t.items.map(i=>`<div class="item ${isItemPast(i)?'past-item':''}"><div class="date">${esc(i.date)}${i.time?'<br>'+esc(i.time):''}</div><div><div class="title"><span class="type ${i.type}">${icon(i.type)}</span> ${esc(i.title)}</div><div class="detail">${esc(typeLabel(i.type))}${i.location?' ・ '+esc(i.location):''}${i.booking?' ・ '+esc(i.booking):''}</div></div><button class="btn ghost small" onclick="showItem('${i.id}')">詳細</button></div>`).join('')+'</div>':'<div class="empty">予定がありません。「＋予定」から追加してください。</div>';renderDay()}
+function renderDay(){const t=trip();const ds=[...new Set(t.items.map(i=>i.date).filter(Boolean))].sort();let day=ds[0]||'';const renderForDay=(d)=>{day=d||'';const card=$('#dayPanel').querySelector('.card');if(!card)return;card.innerHTML=`<div class="toolbar"><h3 style="margin:0">${esc(day)} の予定</h3><input id="daySelect" type="date" value="${esc(day)}"></div>${t.items.filter(i=>i.date===day).map(i=>`<div class="item ${isItemPast(i)?'past-item':''}" style="margin:5px 0"><div class="date">${esc(i.time||'')}</div><div><div class="title">${icon(i.type)} ${esc(i.title)}</div><div class="detail">${esc(i.location||'')}</div></div><button class="btn ghost small" onclick="showItem('${i.id}')">詳細</button></div>`).join('')||'<div class="muted">予定なし</div>'}`;const next=$('#daySelect');if(next)next.onchange=()=>renderForDay(next.value)};$('#dayPanel').innerHTML=day?`<div class="card"><div class="toolbar"><h3 style="margin:0">${esc(day)} の予定</h3><input id="daySelect" type="date" value="${esc(day)}"></div>${t.items.filter(i=>i.date===day).map(i=>`<div class="item ${isItemPast(i)?'past-item':''}" style="margin:5px 0"><div class="date">${esc(i.time||'')}</div><div><div class="title">${icon(i.type)} ${esc(i.title)}</div><div class="detail">${esc(i.location||'')}</div></div><button class="btn ghost small" onclick="showItem('${i.id}')">詳細</button></div>`).join('')}</div>`:'<div class="empty">日程がありません。</div>';const sel=$('#daySelect');if(sel)sel.onchange=()=>renderForDay(sel.value)}
+function showItem(id){const i=trip()?.items.find(x=>x.id===id);if(!i)return;currentItemId=id;const finish=a=>{renderDetail(i,a);show('detailView')};if(db){const req=db.transaction('files').objectStore('files').getAll();req.onsuccess=()=>finish(req.result.filter(x=>x.itemId===id));req.onerror=()=>finish([])}else finish([])}
+function renderDetail(i,a){const edit=canEdit();$('#detailPanel').innerHTML=`<div class="card"><h3 style="margin-top:0">${icon(i.type)} ${esc(i.title)}</h3><div class="kv"><div class="k">種類</div><div class="v">${esc(typeLabel(i.type))}</div><div class="k">日程</div><div class="v">${esc(i.date||'—')}${i.endDate?' ～ '+esc(i.endDate):''}</div><div class="k">時刻</div><div class="v">${esc(i.time||'—')}${i.endTime?' ～ '+esc(i.endTime):''}</div><div class="k">予約番号</div><div class="v">${esc(i.booking||'—')}</div><div class="k">会社・サイト</div><div class="v">${esc(i.provider||'—')}</div><div class="k">便名</div><div class="v">${esc(i.flightNo||'—')}</div><div class="k">場所</div><div class="v">${esc(i.location||'—')}</div><div class="k">住所</div><div class="v">${esc(i.address||'—')}</div><div class="k">電話</div><div class="v">${esc(i.phone||'—')}</div><div class="k">料金</div><div class="v">${esc(i.price||'—')}</div><div class="k">緯度</div><div class="v">${esc(i.lat||'—')}</div><div class="k">経度</div><div class="v">${esc(i.lng||'—')}</div><div class="k">GoogleマップURL</div><div class="v">${i.googleMapsUrl?`<a href="${esc(i.googleMapsUrl)}" target="_blank" rel="noopener">${esc(i.googleMapsUrl)}</a>`:'—'}</div><div class="k">メモ</div><div class="v">${esc(i.notes||'—')}</div></div><div class="actions">${edit?`<button class="btn" onclick="editItem('${i.id}')">編集</button>`:''}${i.address?`<button class="btn secondary" onclick="openGoogleMaps('${esc(i.address)}')">Googleマップ</button>`:''}${resolveItemCoords(i)?`<button class="btn secondary" onclick="focusItemMap('${i.id}')">地図で見る</button>`:''}<button class="btn ghost" onclick="shareItem('${i.id}')">共有</button></div><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="toolbar"><h3 style="margin:0">📎 関連資料</h3>${edit?`<button class="btn small" onclick="attachFiles('${i.id}')">＋ PDF・画像</button>`:''}<input id="attachInput" type="file" accept="application/pdf,image/*" multiple hidden></div><div class="muted">予約確認書PDF、スクリーンショット、写真などをこの予定に紐づけて保存できます。画像はタップで拡大、PDFはタップで開きます。</div><div id="attachments" class="attach-grid">${a.map(x=>attachmentHtml(x)).join('')||'<div class="muted" style="grid-column:1/-1">まだありません。</div>'}</div></div>`}
+function attachmentHtml(x){return x.type==='application/pdf'?`<div class="att pdf"><div class="pdf-icon">📄</div><div class="name">${esc(x.name)}</div><button class="btn small" onclick="openAttachment('${x.id}')">PDFを開く</button><button class="btn secondary small" onclick="scanAttachment('${x.id}')">🔎 自動入力</button>${canEdit()?`<button class="btn danger small" onclick="deleteAttachment('${x.id}')">削除</button>`:''}</div>`:`<div class="att"><img src="${x.data}" alt="${esc(x.name)}" onclick="openAttachment('${x.id}')"><div class="att-body"><div class="name">${esc(x.name)}</div><button class="btn secondary small" onclick="scanAttachment('${x.id}')">🔎 自動入力</button>${canEdit()?`<button class="btn danger small" onclick="deleteAttachment('${x.id}')">削除</button>`:''}</div></div>`}
+function attachFiles(id){if(!editGuard())return;$('#attachInput').click();$('#attachInput').onchange=async e=>{for(const f of e.target.files){await putFile(id,f)}showItem(id);toast('資料を追加しました')}}
+function putFile(itemId,f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const o={id:uid(),itemId,name:f.name,type:f.type,size:f.size,data:r.result};const tx=db.transaction('files','readwrite');tx.objectStore('files').put(o);tx.oncomplete=res;tx.onerror=rej};r.readAsDataURL(f)})}
+function openAttachment(id){const r=db.transaction('files').objectStore('files').get(id);r.onsuccess=()=>{const x=r.result;if(!x)return;try{const parts=x.data.split(','),mime=parts[0].match(/data:([^;]+);/)?.[1]||x.type||'application/octet-stream',raw=atob(parts[1]||''),u=new Uint8Array(raw.length);for(let j=0;j<raw.length;j++)u[j]=raw.charCodeAt(j);const url=URL.createObjectURL(new Blob([u],{type:mime}));const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000)}catch(e){window.open(x.data,'_blank','noopener')}}}function deleteAttachment(id){if(!editGuard())return;if(!confirm('この資料を削除しますか？\nこの操作は取り消せません。'))return;if(!confirm('最終確認：この資料を本当に削除しますか？'))return;const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(id);tx.oncomplete=()=>showItem(currentItemId)}
+
+let ocrScriptPromise=null;
+function loadOCR(){if(ocrScriptPromise)return ocrScriptPromise;ocrScriptPromise=new Promise((resolve,reject)=>{if(window.Tesseract)return resolve(window.Tesseract);const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';sc.onload=()=>resolve(window.Tesseract);sc.onerror=reject;document.head.appendChild(sc)});return ocrScriptPromise}
+function dataUrlToUint8(data){const b=atob(data.split(',')[1]||'');const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+async function extractPdfText(data){
+  if(!window.pdfjsLib){
+    try{window.pdfjsLib=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs')}catch(e){throw new Error('PDF読み取りライブラリを読み込めませんでした')}
+  }
+  const pdfjs=window.pdfjsLib; if(pdfjs.GlobalWorkerOptions)pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+  const pdf=await pdfjs.getDocument({data:dataUrlToUint8(data)}).promise; let text='';
+  for(let n=1;n<=Math.min(pdf.numPages,10);n++){const page=await pdf.getPage(n);const c=await page.getTextContent();text+=c.items.map(x=>x.str).join(' ')+'\n'}
+  if(text.trim())return text;
+  // OCR fallback for image-only PDFs: render first 5 pages at moderate resolution.
+  const T=await loadOCR(); let out='';
+  for(let n=1;n<=Math.min(pdf.numPages,5);n++){const page=await pdf.getPage(n);const vp=page.getViewport({scale:1.6});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;const r=await T.recognize(c,'jpn+eng',{logger:m=>{if(m.status==='recognizing text')toast('PDFをOCR中 '+Math.round((m.progress||0)*100)+'%')}});out+=r.data.text+'\n';}
+  return out;
+}
+async function extractImageText(data){const T=await loadOCR();const r=await T.recognize(data,'jpn+eng',{logger:m=>{if(m.status==='recognizing text')toast('画像をOCR中 '+Math.round((m.progress||0)*100)+'%')}});return r.data.text||''}
+function norm(s){return String(s||'').replace(/[\u3000]/g,' ').replace(/[ＯＯ]/g,'O').replace(/[Ｉ]/g,'I').replace(/\s+/g,' ').trim()}
+function detectFields(text){
+  const t=String(text||'').replace(/\r/g,'\n'); const flat=norm(t);
+  // OCRで判定できなかった項目も、結果画面では必ず表示するため最初に全項目を空欄で用意。
+  const out={title:'',type:'',date:'',endDate:'',time:'',endTime:'',booking:'',provider:'',flightNo:'',location:'',address:'',phone:'',price:'',lat:'',lng:'',googleMapsUrl:'',notes:''};
+  const pick=(re)=>{const m=t.match(re)||flat.match(re);return m&&m[1]?m[1].trim():''};
+  out.booking=pick(/(?:予約番号|予約\s*番号|予約番号\s*[:：]|Booking(?:\s*(?:Reference|Number|ID))?|Confirmation(?:\s*(?:Number|Code))?|PNR|Reference)\s*[:：#\-]?\s*([A-Z0-9]{5,20})/i);
+  out.flightNo=pick(/\b([A-Z]{2,3}\s?\d{1,4})\b/); if(out.flightNo)out.flightNo=out.flightNo.replace(/\s+/g,' ');
+  out.provider=pick(/(?:航空会社|Airline|Operated by|Issued by|予約サイト|Booked via)\s*[:：]?\s*([^\n,]{2,80})/i);
+  const dates=[...t.matchAll(/\b(20\d{2})[\/\-.年](\d{1,2})[\/\-.月](\d{1,2})日?/g)].map(m=>`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`);
+  if(dates[0])out.date=dates[0]; if(dates[1])out.endDate=dates[1];
+  const times=[...t.matchAll(/\b([01]?\d|2[0-3])[:：]([0-5]\d)\b/g)].map(m=>`${String(m[1]).padStart(2,'0')}:${m[2]}`); if(times[0])out.time=times[0]; if(times[1])out.endTime=times[1];
+  out.price=pick(/(?:合計|総額|料金|Total|Amount|Price)\s*[:：]?\s*([¥￥$€£]?\s?[0-9][0-9,]*(?:\.\d{1,2})?)/i);
+  out.address=pick(/(?:住所|Address)\s*[:：]?\s*([^\n]{5,120})/i);
+  out.phone=pick(/(?:電話|Phone|Tel)\s*[:：]?\s*([+0-9()\-\s]{7,30})/i);
+  out.location=pick(/(?:場所|都市|Location|City|Destination)\s*[:：]?\s*([^\n]{2,80})/i);
+  out.title=pick(/(?:名称|旅行名|ホテル名|施設名|Hotel(?:\s*Name)?|航空便|Flight)\s*[:：]?\s*([^\n]{2,100})/i);
+  const gm=/(https?:\/\/(?:www\.)?(?:google\.[^\s/]+|maps\.google\.[^\s/]+|maps\.app\.goo\.gl)\S*)/i.exec(t); if(gm)out.googleMapsUrl=gm[1];
+  // メモ欄：予約確認書などにある「メモ / Note / Remarks / Special request」等を抽出。
+  const memoRe=/(?:メモ|備考|注意事項|Note|Notes|Remark|Remarks|Special\s*Request|Request)\s*[:：]?\s*([\s\S]{2,300}?)(?=\n\s*(?:予約番号|Booking|Confirmation|PNR|住所|Address|電話|Phone|料金|Total|Price|日時|Date|Time|便名|Flight|ホテル名|Hotel|場所|Location|緯度|Latitude|経度|Longitude)|$)/i;
+  const mm=t.match(memoRe); if(mm&&mm[1])out.notes=mm[1].replace(/^[ \t]+|[ \t]+$/g,'').replace(/\n{3,}/g,'\n\n').trim();
+  const parsedCoord=parseCoordinateText(text); if(parsedCoord){out.lat=parsedCoord[0];out.lng=parsedCoord[1];}
+  return out;
+}
+function fieldRows(fields){
+  const order=[['title','名称'],['type','種類'],['date','開始日'],['endDate','終了日'],['time','開始時刻'],['endTime','終了時刻'],['booking','予約管理番号'],['provider','会社・予約サイト'],['flightNo','便名'],['location','場所'],['address','住所'],['phone','電話'],['price','料金'],['lat','緯度'],['lng','経度'],['googleMapsUrl','GoogleマップURL'],['notes','メモ']];
+  return order.map(([k,label])=>{const v=fields[k]??'';return `<div class="field${k==='notes'||k==='googleMapsUrl'?' full':''}"><label>${label}</label>${k==='notes'?`<textarea data-scan-field="${k}">${esc(v)}</textarea>`:`<input data-scan-field="${k}" value="${esc(v)}">`}</div>`}).join('');
+}
+async function scanAttachment(id){
+  const r=db.transaction('files').objectStore('files').get(id); r.onsuccess=async()=>{const x=r.result;if(!x)return;$('#modalTitle').textContent='🔎 予約情報を自動読み取り';$('#modalBody').innerHTML='<div class="form"><div class="notice">PDFの文字情報、またはスクリーンショット／画像の文字を読み取り、予約番号・日付・便名・住所・電話・料金・メモを候補として抽出します。ホテル資料に緯度・経度が記載されている場合は、緯度・経度も自動入力候補にします。重要情報なので、反映前に必ず内容を確認してください。</div><p id="scanStatus" class="muted">読み取り中…</p></div>';$('#modal').classList.add('show');try{let text='';if(x.type==='application/pdf')text=await extractPdfText(x.data);else text=await extractImageText(x.data);const fields=detectFields(text);const shown=Object.keys(fields).some(k=>fields[k]);$('#modalBody').innerHTML=`<div class="form"><div class="notice">自動抽出結果です。誤認識があり得るため、内容を確認してから「予定に反映」を押してください。</div><div class="fg">${fieldRows(fields)}</div><div class="field full" style="margin-top:10px"><label>読み取った全文（確認用）</label><textarea id="scanText" style="min-height:180px">${esc(text.slice(0,12000))}</textarea></div><div class="actions"><button class="btn" id="applyScan">予定に反映</button><button class="btn secondary" id="copyScan">全文をコピー</button></div><p class="muted">${shown?'抽出候補を表示しています。':'候補を自動判定できませんでした。全文から必要項目を手入力してください。'}</p></div>`;$('#applyScan').onclick=()=>{const i=trip().items.find(z=>z.id===x.itemId);if(!i){toast('予定が見つかりません');return}document.querySelectorAll('[data-scan-field]').forEach(el=>{const k=el.dataset.scanField;if(el.value.trim())i[k]=el.value.trim()});save();close();showItem(i.id);toast('読み取り結果を反映しました')};$('#copyScan').onclick=async()=>{await navigator.clipboard?.writeText($('#scanText').value);toast('全文をコピーしました')};}catch(e){$('#modalBody').innerHTML=`<div class="form"><div class="notice">読み取りに失敗しました。初回のOCR/PDFライブラリ読み込みにはネット接続が必要な場合があります。オンライン時に一度読み取り機能を使用してから、再度お試しください。PDFの場合、文字情報を持つPDFは直接解析できますが、画像PDFはOCR処理が必要です。</div><p class="muted">${esc(e.message||String(e))}</p></div>`}};
+}
+
+function normalizePlaceText(s){return String(s||'').toLowerCase().normalize('NFKC').replace(/[\s　,，.．・()（）\[\]「」『』\-‐‑–—_]/g,'').replace(/県|市|区|郡|町|村/g,'');}
+const CITY_ALIAS={
+ 'santiago':'サンティアゴ','santiagodechile':'サンティアゴ','サンティアゴチリ':'サンティアゴ',
+ 'sanpedrodeatacama':'サンペドロ・デ・アタカマ','sanpedroatacama':'サンペドロ・デ・アタカマ','サンペドロデアタカマチリ':'サンペドロ・デ・アタカマ',
+ 'uyuni':'ウユニ','uyunibolivia':'ウユニ','ラパスボリビア':'ラパス','lapaz':'ラパス','lapazbolivia':'ラパス',
+ 'lima':'リマ','limaperu':'リマ','cusco':'クスコ','cuzco':'クスコ','cuscoperu':'クスコ',
+ 'buenosaires':'ブエノスアイレス','buenosairesargentina':'ブエノスアイレス','saopaulo':'サンパウロ','saopaulobrazil':'サンパウロ',
+ 'riodejaneiro':'リオデジャネイロ','riodejaneirobrazil':'リオデジャネイロ','iguazu':'イグアス','iguazufalls':'イグアス',
+ 'singapore':'シンガポール','singaporecity':'シンガポール','nagoya':'名古屋','nagoyajapan':'名古屋','chubucentrair':'名古屋',
+ 'osaka':'大阪','osakajapan':'大阪','tokyo':'東京','tokyojapan':'東京','cairo':'カイロ','cairoegypt':'カイロ',
+ 'istanbul':'イスタンブール','istanbulturkey':'イスタンブール','rapanui':'イースター島','easterisland':'イースター島','easterislandchile':'イースター島','isladepascua':'イースター島','ラパヌイ':'イースター島','ラパ・ヌイ':'イースター島','イースター島':'イースター島','oslob':'オスロブ','oslobcebu':'オスロブ','oslobphilippines':'オスロブ','sydney':'シドニー','sydneyaustralia':'シドニー'
+};
+const CITY_DB_URL='https://cdn.jsdelivr.net/gh/joelacus/world-cities@main/world_cities_5000.json';
+let cityDb1000=null, cityDbLoading=null;
+async function loadCityDb1000(){
+  if(cityDb1000)return cityDb1000;
+  if(cityDbLoading)return cityDbLoading;
+  cityDbLoading=(async()=>{
+    try{
+      const r=await fetch(CITY_DB_URL,{cache:'force-cache'}); if(!r.ok)throw new Error('city db');
+      const a=await r.json();
+      cityDb1000=a.filter(x=>x&&x.name&&Number.isFinite(Number(x.lat))&&Number.isFinite(Number(x.lng)))
+        .sort((x,y)=>(Number(y.population)||0)-(Number(x.population)||0)).slice(0,1000);
+      return cityDb1000;
+    }catch(e){cityDb1000=[];return cityDb1000}
+  })();
+  return cityDbLoading;
+}
+function findCityCoordsDynamic(text){
+  const raw=normalizePlaceText(text); if(!raw||!Array.isArray(cityDb1000))return null;
+  const a=[...cityDb1000].sort((x,y)=>normalizePlaceText(y.name).length-normalizePlaceText(x.name).length);
+  const hit=a.find(x=>{const k=normalizePlaceText(x.name); if(!k)return false; if(!/^[a-z0-9]+$/.test(k))return raw.includes(k); let pos=raw.indexOf(k); while(pos>=0){const b=pos>0?raw[pos-1]:'';const e=pos+k.length<raw.length?raw[pos+k.length]:'';if(!/[a-z0-9]/.test(b)&&!/[a-z0-9]/.test(e))return true;pos=raw.indexOf(k,pos+1)} return false;});
+  if(hit)return [Number(hit.lat),Number(hit.lng),hit.name];
+  return null;
+}
+async function findCityCoordsAsync(text){
+  const local=findCityCoords(text); if(local)return local;
+  const db=await loadCityDb1000();
+  return findCityCoordsDynamic(text) || null;
+}
+function findCityCoords(text){
+  const raw=normalizePlaceText(text);
+  if(!raw)return null;
+  // 地名の部分一致は「オスロブ」に「オスロ」が含まれるような誤判定を起こすため、
+  // まず長い地名を優先する。さらに英字地名は単語境界を確認して誤一致を減らす。
+  const latinBoundary=(raw,key)=>{
+    const r=String(raw||''), k=String(key||'');
+    if(!k)return false;
+    if(!/^[a-z0-9]+$/.test(k))return r.includes(k);
+    let pos=r.indexOf(k);
+    while(pos>=0){
+      const before=pos>0?r[pos-1]:'';
+      const after=pos+k.length<r.length?r[pos+k.length]:'';
+      if(!/[a-z0-9]/.test(before)&&!/[a-z0-9]/.test(after))return true;
+      pos=r.indexOf(k,pos+1);
+    }
+    return false;
+  };
+  const cities=Object.entries(CITY).sort((a,b)=>normalizePlaceText(b[0]).length-normalizePlaceText(a[0]).length);
+  for(const [name,xy] of cities){const key=normalizePlaceText(name);if(latinBoundary(raw,key))return [xy[0],xy[1],name];}
+  const aliases=Object.entries(CITY_ALIAS).sort((a,b)=>normalizePlaceText(b[0]).length-normalizePlaceText(a[0]).length);
+  for(const [alias,name] of aliases){const key=normalizePlaceText(alias);if(latinBoundary(raw,key)){const xy=CITY[name];if(xy)return [xy[0],xy[1],name];}}
+  return null;
+}
+function formatCoord(v){
+  const n=Number(v);
+  if(!Number.isFinite(n))return '';
+  // DDM/DMSからの割り算で発生する循環小数・浮動小数点誤差を抑え、
+  // 実用上十分な6桁（約10cm程度）で固定。末尾の0だけ整理します。
+  return n.toFixed(6).replace(/\.?0+$/,'');
+}
+function parseManualCoord(v,axis){
+  // 手入力値は保存時に判定・削除しない。地図表示時だけ座標として解釈する。
+  let raw=String(v??'').trim(); if(!raw)return null;
+  raw=raw.replace(/[−–—]/g,'-').replace(/\u00A0/g,' ');
+  let n=Number(raw.replace(/,/g,'.'));
+  if(Number.isFinite(n))return n;
+  const s=raw.toUpperCase().replace(/[°º]/g,' ').replace(/[′']/g,' ').replace(/[″"]/g,' ').replace(/,/g,'.').replace(/\s+/g,' ').trim();
+  let m=s.match(/^([NSEW])?\s*(-?\d+(?:\.\d+)?)\s*([NSEW])?$/);
+  if(m){n=Number(m[2]);const dir=m[1]||m[3]||'';if(dir==='S'||dir==='W')n=-Math.abs(n);if(dir==='N'||dir==='E')n=Math.abs(n);return n}
+  m=s.match(/^([NSEW])?\s*(\d{1,3})\s+(\d{1,2}(?:\.\d+)?)\s*([NSEW])?$/);
+  if(m){const deg=Number(m[2]),min=Number(m[3]),dir=m[1]||m[4]||'';if(!Number.isFinite(deg)||!Number.isFinite(min)||min<0||min>=60)return null;n=deg+min/60;if(dir==='S'||dir==='W')n=-n;return n}
+  m=s.match(/^([NSEW])?\s*(\d{1,3})\s*[: ]\s*(\d{1,2})\s*[: ]\s*(\d{1,2}(?:\.\d+)?)\s*([NSEW])?$/);
+  if(m){const deg=Number(m[2]),min=Number(m[3]),sec=Number(m[4]),dir=m[1]||m[5]||'';if(!Number.isFinite(deg)||!Number.isFinite(min)||!Number.isFinite(sec)||min<0||min>=60||sec<0||sec>=60)return null;n=deg+min/60+sec/3600;if(dir==='S'||dir==='W')n=-n;return n}
+  return null;
+}
+function validCoords(a,b){const lat=parseManualCoord(a,'lat'),lng=parseManualCoord(b,'lng');if(!Number.isFinite(lat)||!Number.isFinite(lng))return null;if(lat<-90||lat>90||lng<-180||lng>180)return null;if(lat===0&&lng===0)return null;return [lat,lng]}
+function extractStoredCoords(i){
+  if(!i)return null;
+  const pairs=[[i.lat,i.lng],[i.latitude,i.longitude],[i.latitude,i.lng],[i.lat,i.longitude]];
+  for(const [a,b] of pairs){const c=validCoords(a,b);if(c)return c;}
+  const u=String(i.googleMapsUrl||'');
+  const patterns=[/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/i,/!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/i,/[?&](?:query|q)=(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/i];
+  for(const re of patterns){const m=u.match(re);if(m){const c=validCoords(m[1],m[2]);if(c)return c;}}
+  return null;
+}
+function resolveItemCoords(i){
+  if(!i)return null;
+  const stored=extractStoredCoords(i); if(stored)return stored;
+  const text=((i.location||'')+' '+(i.address||'')+' '+(i.title||'')).trim();
+  const city=findCityCoords(text); return city ? [city[0],city[1]] : null;
+}
+function mapEligibleItem(i){return i&&['hotel','spot'].includes(i.type);}
+function shortestGreatCircleParts(a,b,steps=64){
+  const lat1=a[0]*Math.PI/180,lat2=b[0]*Math.PI/180;
+  let dLon=b[1]-a[1];while(dLon>180)dLon-=360;while(dLon<-180)dLon+=360;
+  const lon1=a[1]*Math.PI/180,lon2=(a[1]+dLon)*Math.PI/180;
+  const x1=Math.cos(lat1)*Math.cos(lon1),y1=Math.cos(lat1)*Math.sin(lon1),z1=Math.sin(lat1);
+  const x2=Math.cos(lat2)*Math.cos(lon2),y2=Math.cos(lat2)*Math.sin(lon2),z2=Math.sin(lat2);
+  let dot=x1*x2+y1*y2+z1*z2;dot=Math.max(-1,Math.min(1,dot));const omega=Math.acos(dot),pts=[];
+  for(let k=0;k<=steps;k++){const t=k/steps;let x,y,z;if(omega<1e-10){x=x1;y=y1;z=z1}else{const so=Math.sin(omega),A=Math.sin((1-t)*omega)/so,B=Math.sin(t*omega)/so;x=A*x1+B*x2;y=A*y1+B*y2;z=A*z1+B*z2;}let lon=Math.atan2(y,x)*180/Math.PI;while(lon>180)lon-=360;while(lon<-180)lon+=360;pts.push([Math.atan2(z,Math.hypot(x,y))*180/Math.PI,lon]);}
+  const parts=[[]];for(const pt of pts){const part=parts[parts.length-1];if(part.length&&Math.abs(pt[1]-part[part.length-1][1])>180)parts.push([pt]);else part.push(pt);}return parts.filter(x=>x.length>1);
+}
+
+function parseCoordinateValue(dir,deg,min,sec){
+  const d=Number(deg),m=Number(min),s=sec==null?0:Number(sec);
+  if(!Number.isFinite(d)||!Number.isFinite(m)||!Number.isFinite(s)||m<0||m>=60||s<0||s>=60)return null;
+  let v=Math.abs(d)+m/60+s/3600;
+  if(/[SW]/i.test(dir))v=-v;
+  return v;
+}
+function parseCoordinateText(text){
+  // OCRは「°」を ? / * / " / ' / などに誤認識したり、記号を落とすことがあるため、
+  // 度の記号そのものには依存せず「方位＋度＋分(＋秒)」の数字の並びを優先して解析する。
+  let t=String(text||'').replace(/[′’]/g,"'").replace(/[″“”]/g,'"').replace(/度/g,'°');
+  t=t.replace(/[\u00A0]/g,' ');
+  const cleanPart=(v)=>String(v||'').trim();
+  const minuteValue=(v)=>{
+    let x=cleanPart(v).replace(/,/g,'.');
+    if(!x)return null;
+    // OCRで 58.787 が 58787 のように小数点を失った場合を救済。
+    if(/^\d{3,5}$/.test(x)){
+      const n=Number(x);
+      if(n>=6000 && n<=59999) x=x.slice(0,2)+'.'+x.slice(2);
+      else if(n>=600 && n<6000) x=x.slice(0,1)+'.'+x.slice(1);
+    }
+    const n=Number(x);
+    return Number.isFinite(n)?n:null;
+  };
+  const parsePart=(dir,deg,min,sec)=>{
+    const d=Number(deg), m=minuteValue(min), s=sec==null||sec===''?0:Number(String(sec).replace(',','.'));
+    if(!Number.isFinite(d)||m==null||!Number.isFinite(s)||m<0||m>=60||s<0||s>=60)return null;
+    let v=Math.abs(d)+m/60+s/3600;
+    if(/[SW]/i.test(dir))v=-v;
+    return v;
+  };
+  // 方位記号が先頭：N 034? 24.675 / E 135" 18.079
+  // 度記号は任意。OCRで混入する ? * " ' ^ なども単なる区切りとして無視。
+  const leadRe=/\b([NS])\s*([0-9]{1,3})\s*[^0-9A-Za-z\s]?\s*([0-9]{1,5}(?:[.,][0-9]+)?)\s*(?:['′])?\s*(?:(\d+(?:[.,]\d+)?)\s*["″])?/i;
+  const lonLeadRe=/\b([EW])\s*([0-9]{1,3})\s*[^0-9A-Za-z\s]?\s*([0-9]{1,5}(?:[.,][0-9]+)?)\s*(?:['′])?\s*(?:(\d+(?:[.,]\d+)?)\s*["″])?/i;
+  let m=t.match(leadRe), n=t.match(lonLeadRe);
+  if(m&&n){
+    const lat=parsePart(m[1],m[2],m[3],m[4]);
+    const lng=parsePart(n[1],n[2],n[3],n[4]);
+    const c=validCoords(lat,lng);if(c)return c;
+  }
+  // 方位記号が末尾：34°24.675'N 135°18.079'E
+  const endRe=/([0-9]{1,3})\s*[^0-9A-Za-z\s]?\s*([0-9]{1,5}(?:[.,][0-9]+)?)\s*(?:['′])?\s*(?:(\d+(?:[.,]\d+)?)\s*["″])?\s*([NS])[^0-9NSWE]+([0-9]{1,3})\s*[^0-9A-Za-z\s]?\s*([0-9]{1,5}(?:[.,][0-9]+)?)\s*(?:['′])?\s*(?:(\d+(?:[.,]\d+)?)\s*["″])?\s*([EW])/i;
+  m=t.match(endRe);
+  if(m){
+    const lat=parsePart(m[4],m[1],m[2],m[3]);
+    const lng=parsePart(m[9],m[5],m[6],m[7]);
+    const c=validCoords(lat,lng);if(c)return c;
+  }
+  // 小数点付き十進度：34.123, 135.456
+  const pair=/(?:緯度|Latitude|Lat)?\s*[:：]?\s*(-?\d{1,2}(?:\.\d+)?)\s*[,，]\s*(?:経度|Longitude|Lng|Lon)?\s*[:：]?\s*(-?\d{1,3}(?:\.\d+)?)/i.exec(t);
+  if(pair){const c=validCoords(pair[1],pair[2]);if(c)return c;}
+  return null;
+}
+
+function parseGoogleMapsCoords(u){
+  try{
+    let s=String(u||'').trim();
+    for(let n=0;n<3;n++){const d=decodeURIComponent(s);if(d===s)break;s=d;}
+    let m=s.match(/@(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)/); if(m){const c=validCoords(m[1],m[2]);if(c)return c;}
+    m=s.match(/!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/); if(m){const c=validCoords(m[1],m[2]);if(c)return c;}
+    m=s.match(/(?:[?&]|\b)(?:q|query|ll|center|destination|origin)=(-?\d+(?:\.\d+)?)[,%+\s]+(-?\d+(?:\.\d+)?)/i); if(m){const c=validCoords(m[1],m[2]);if(c)return c;}
+    m=s.match(/(?:\/maps\/(?:search|dir)\/)(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/i); if(m){const c=validCoords(m[1],m[2]);if(c)return c;}
+  }catch(e){}
+  return null;
+}
+async function resolveGoogleMapsCoords(url,placeText){
+  const direct=parseGoogleMapsCoords(url); if(direct)return {coords:direct,source:'URL'};
+  const u=String(url||'').trim();
+  if(/^https?:\/\/(?:maps\.app\.goo\.gl|goo\.gl\/maps|g\.page)\//i.test(u)){
+    try{
+      const r=await fetch(u,{redirect:'follow',cache:'no-store'});
+      const finalUrl=r.url||''; const c=parseGoogleMapsCoords(finalUrl);
+      if(c)return {coords:c,source:'短縮URLの展開'};
+    }catch(e){}
+  }
+  const q=String(placeText||'').trim();
+  if(q){
+    try{
+      const r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}});
+      if(r.ok){const a=await r.json();if(a&&a[0]){const c=validCoords(a[0].lat,a[0].lon);if(c)return {coords:c,source:'場所名・住所検索'};}}
+    }catch(e){}
+  }
+  return null;
+}
+function editItem(id){if(!editGuard())return;const i=trip().items.find(x=>x.id===id);if(i)openItemForm(i)}function openGoogleMaps(q){window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener')}async function dataUrlToFile(att){
+  try{const r=await fetch(att.data);const blob=await r.blob();return new File([blob],att.name||'attachment',{type:att.type||blob.type||'application/octet-stream'});}catch(e){return null}
+}
+async function shareItem(id){
+  const i=trip().items.find(x=>x.id===id);if(!i)return;
+  const att=await new Promise(resolve=>{if(!db)return resolve([]);const r=db.transaction('files').objectStore('files').getAll();r.onsuccess=()=>resolve((r.result||[]).filter(x=>x.itemId===id));r.onerror=()=>resolve([])});
+  const lines=[`【${typeLabel(i.type)}】 ${i.title||'—'}`,`日程: ${i.date||'—'}${i.endDate?' ～ '+i.endDate:''}`,`時刻: ${i.time||'—'}${i.endTime?' ～ '+i.endTime:''}`,`予約番号: ${i.booking||'—'}`,`会社・予約サイト: ${i.provider||'—'}`,`便名: ${i.flightNo||'—'}`,`場所: ${i.location||'—'}`,`住所: ${i.address||'—'}`,`電話: ${i.phone||'—'}`,`料金: ${i.price||'—'}`,`緯度: ${i.lat||'—'}`,`経度: ${i.lng||'—'}`,`GoogleマップURL: ${i.googleMapsUrl||'—'}`,`メモ: ${i.notes||'—'}`,`関連資料: ${att.length?att.map(x=>x.name).join(', '):'なし'}`];
+  const text=lines.join('\n');
+  const files=[];for(const a of att){const f=await dataUrlToFile(a);if(f)files.push(f)}
+  if(navigator.share){
+    try{
+      if(files.length&&navigator.canShare&&navigator.canShare({files})){await navigator.share({title:i.title||'旅行予定',text,files});return;}
+      await navigator.share({title:i.title||'旅行予定',text});
+      if(files.length)toast('この端末ではファイル共有に非対応のため、文字情報のみ共有しました');return;
+    }catch(e){if(e&&e.name==='AbortError')return;}
+  }
+  try{await navigator.clipboard?.writeText(text);toast(files.length?'文字情報をコピーしました（ファイル共有は非対応）':'詳細情報をコピーしました')}catch(e){toast('共有に失敗しました')}
+}
+const HOME_LAT_KEY='mytravel-home-lat';
+const HOME_LNG_KEY='mytravel-home-lng';
+function getHomeCoords(){const a=safeGet(HOME_LAT_KEY),b=safeGet(HOME_LNG_KEY);return validCoords(a,b)}
+function setHomeCoords(lat,lng){const c=validCoords(lat,lng);if(!c)return false;return safeSet(HOME_LAT_KEY,String(c[0]))&&safeSet(HOME_LNG_KEY,String(c[1]))}
+function normalizeNear(lon,ref){
+  let x=Number(lon); if(!Number.isFinite(x)) return lon;
+  while(x-ref>180)x-=360; while(x-ref<-180)x+=360;
+  return x;
+}
+function unfoldRoutePoints(points, preferPacific){
+  if(!points.length)return [];
+  const out=[[points[0][0], preferPacific ? normalizeNear(points[0][1],180) : points[0][1]]];
+  for(let n=1;n<points.length;n++){
+    const prev=out[n-1][1];
+    out.push([points[n][0],normalizeNear(points[n][1],prev)]);
+  }
+  return out;
+}
+function makeWrappedMarkerCoord(c,centerLon){
+  return [c[0],normalizeNear(c[1],centerLon)];
+}
+function initMap(){
+  if(map)map.remove();
+  map=L.map('map',{worldCopyJump:false}).setView([35.68,139.65],2.5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+  mapPoints=[];const markerLayer=L.featureGroup().addTo(map);const t=trip();
+  if(!t){const note=document.querySelector('.map-note');if(note)note.textContent='旅行を開いてから「地図」を選択してください。';return;}
+  const home=getHomeCoords();
+  const eligible=(t.items||[]).filter(i=>!!i).sort((a,b)=>(String(a.date||'')+String(a.time||'')).localeCompare(String(b.date||'')+String(b.time||'')));
+  let coordCount=0,fallbackCount=0;const routePoints=[];
+  if(home){routePoints.push(home);mapPoints.push(home);}
+  eligible.forEach(i=>{
+    const stored=extractStoredCoords(i);
+    const c=stored||((i.type==='hotel'||i.type==='spot')?resolveItemCoords(i):null);
+    if(!c)return;
+    mapPoints.push(c);routePoints.push(c);if(stored)coordCount++;else fallbackCount++;
+  });
+  if(home)routePoints.push(home);
+
+  // 太平洋中心モード：負の経度を+360して、日付変更線の左右を同じ世界コピーにそろえる。
+  const pacific=mapPoints.some(p=>p[1]<-30)&&mapPoints.some(p=>p[1]>100);
+  const displayRoute=unfoldRoutePoints(routePoints,pacific);
+  const markerCenter=pacific?180:((displayRoute.length?displayRoute[0][1]:139.65));
+  displayRoute.forEach((c,idx)=>{
+    let html='';
+    if(home && idx===0) html='<b>🏠 自宅（出発）</b>';
+    else if(home && idx===displayRoute.length-1) html='<b>🏠 自宅（最終到着）</b>';
+    else {
+      const ri=eligible.find(i=>{
+        const stored=extractStoredCoords(i);
+        const cc=stored||((i.type==='hotel'||i.type==='spot')?resolveItemCoords(i):null);
+        return cc && Math.abs(cc[0]-routePoints[Math.min(idx-(home?1:0),routePoints.length-1)][0])<1e-9 && Math.abs(cc[1]-routePoints[Math.min(idx-(home?1:0),routePoints.length-1)][1])<1e-9;
+      });
+      if(ri){
+        const stored=extractStoredCoords(ri); const source=stored?'登録された緯度・経度':'場所名から自動判定';
+        html=`<b>${esc(ri.title)}</b><br>${esc(t.name||'')}<br>${esc(ri.date||'')} ${esc(ri.time||'')}<br>${esc(ri.location||'')}<br><small>${source}</small>`;
+      }
+    }
+    L.marker(c).addTo(markerLayer).bindPopup(html||'<b>地点</b>');
+  });
+
+  // ルートは表示用にアンラップした経度で一続きに描画する。
+  for(let n=1;n<displayRoute.length;n++){
+    L.polyline([displayRoute[n-1],displayRoute[n]],{weight:3,opacity:.8,noClip:true}).addTo(map);
+  }
+  const allPts=displayRoute.slice();
+  const refreshMap=()=>{
+    map.invalidateSize({pan:false,animate:false});
+    if(!allPts.length){map.setView([35.68,139.65],2.5,{animate:false});return;}
+    if(pacific){
+      const lats=allPts.map(p=>p[0]),lons=allPts.map(p=>p[1]);
+      const centerLat=(Math.min(...lats)+Math.max(...lats))/2;
+      let centerLon=(Math.min(...lons)+Math.max(...lons))/2;
+      // Leafletは180°付近を表示中心として扱える。ここでは経度180を基準にする。
+      if(centerLon<180)centerLon+=360;
+      map.setView([centerLat,centerLon],2,{animate:false});
+    }else if(allPts.length===1)map.setView(allPts[0],12,{animate:false});
+    else map.fitBounds(allPts,{padding:[40,40],maxZoom:12,animate:false});
+  };
+  requestAnimationFrame(()=>setTimeout(refreshMap,100));
+  const note=document.querySelector('.map-note');
+  if(note)note.textContent=allPts.length?`「${t.name||'この旅行'}」の地点を表示しています（${allPts.length}地点：登録座標${coordCount}・場所名から${fallbackCount}）。自宅を始点・終点にして、予定順に直線で結んでいます。${pacific?' 北米・南米方面は太平洋中心で、日付変更線の左右も連続表示します。':''}`:(home?'この旅行には地図表示できる地点がありません。':'設定で自宅の緯度・経度を登録すると、自宅を出発・最終到着地点にできます。');
+}
+function focusItemMap(id){
+  const i=trip()?.items?.find(x=>x.id===id);if(!i){toast('予定が見つかりません');return}
+  const c=resolveItemCoords(i);if(!c){toast('この予定から地図座標を取得できませんでした');return}
+  show('tripView');document.querySelector('[data-tab="map"]').click();setTimeout(()=>{if(map)map.setView(c,12,{animate:false})},300)
+}
+
+function focusMap(lat,lng){const c=validCoords(lat,lng);if(!c){toast('正しい緯度・経度がないため地図に表示できません');return}show('tripView');document.querySelector('[data-tab="map"]').click();setTimeout(()=>{if(map){map.setView(c,8)}} ,300)}function openCurrent(){if(!navigator.geolocation){toast('位置情報に対応していません');return}navigator.geolocation.getCurrentPosition(p=>{if(!map)return;const ll=[p.coords.latitude,p.coords.longitude];L.marker(ll).addTo(map).bindPopup('現在地').openPopup();map.setView(ll,12)},()=>toast('現在地を取得できませんでした'))}
+function route(){const pts=mapPoints;if(pts.length<2){toast('地図上に2地点以上必要です');return}const q=pts.map(p=>p.join(',')).join('/');window.open('https://www.google.com/maps/dir/'+q,'_blank','noopener')}
+function close(){ $('#modal').classList.remove('show') }
+
+const DRIVE_FOLDER_NAME='My Travel Cloud';
+const DRIVE_FILE_NAME='my-travel-sync.json';
+let driveToken=null,driveClient=null;
+const driveState={get clientId(){return localStorage.getItem('mytravel-google-client-id')||''},set clientId(v){localStorage.setItem('mytravel-google-client-id',v||'')}};
+function setDriveStatus(t){const e=$('#driveStatus');if(e)e.textContent=t}
+function driveAuth(){return new Promise((resolve,reject)=>{const id=driveState.clientId.trim();if(!id){reject(new Error('Google OAuth クライアントIDを設定してください'));return}if(!window.google?.accounts?.oauth2){reject(new Error('Google認証ライブラリを読み込めません。インターネット接続を確認してください'));return}driveClient=google.accounts.oauth2.initTokenClient({client_id:id,scope:'https://www.googleapis.com/auth/drive.file',callback:r=>{if(r.error)reject(r);else{driveToken=r.access_token;resolve(driveToken)}}});driveClient.requestAccessToken({prompt:driveToken?'':'consent'});})}
+async function driveFetch(url,opt={}){if(!driveToken)await driveAuth();const headers=new Headers(opt.headers||{});headers.set('Authorization','Bearer '+driveToken);let r=await fetch(url,{...opt,headers});if(r.status===401){driveToken=null;await driveAuth();headers.set('Authorization','Bearer '+driveToken);r=await fetch(url,{...opt,headers})}if(!r.ok)throw new Error((await r.text()).slice(0,300)||('HTTP '+r.status));return r}
+async function makeCloudBackup(){const files=await getAllFiles();return JSON.stringify({version:2,exportedAt:new Date().toISOString(),state,files})}
+async function ensureDriveFolder(){const q=encodeURIComponent("name='"+DRIVE_FOLDER_NAME+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");const r=await driveFetch('https://www.googleapis.com/drive/v3/files?q='+q+'&spaces=drive&fields=files(id,name,modifiedTime)&pageSize=10');const x=await r.json();if(x.files?.[0])return x.files[0];const body=JSON.stringify({name:DRIVE_FOLDER_NAME,mimeType:'application/vnd.google-apps.folder'});const c=await driveFetch('https://www.googleapis.com/drive/v3/files?fields=id,name',{method:'POST',headers:{'Content-Type':'application/json'},body});return await c.json()}
+async function findDriveBackup(){const folder=await ensureDriveFolder();const q=encodeURIComponent("'"+folder.id+"' in parents and name='"+DRIVE_FILE_NAME+"' and trashed=false");const r=await driveFetch('https://www.googleapis.com/drive/v3/files?q='+q+'&spaces=drive&fields=files(id,name,modifiedTime,parents)&pageSize=10');const x=await r.json();return {folder,...(x.files?.[0]||{})}}
+async function uploadDriveBackup(){if(!editGuard())return;try{setDriveStatus('接続しています…');await driveAuth();const text=await makeCloudBackup();const file=await findDriveBackup();const folder=file.folder;const meta=JSON.stringify(file?.id?{mimeType:'application/json'}:{name:DRIVE_FILE_NAME,parents:[folder.id],mimeType:'application/json'});const blob=new Blob([text],{type:'application/json'});let r;
+ if(blob.size<=5*1024*1024){const boundary='mytravel_'+Date.now();const body=new Blob(['--'+boundary+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n',meta,'\r\n--'+boundary+'\r\nContent-Type: application/json\r\n\r\n',blob,'\r\n--'+boundary+'--'],{type:'multipart/related; boundary='+boundary});const url=file.id?'https://www.googleapis.com/upload/drive/v3/files/'+file.id+'?uploadType=multipart':'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';r=await driveFetch(url,{method:file.id?'PATCH':'POST',body});}
+ else {const initUrl=file.id?'https://www.googleapis.com/upload/drive/v3/files/'+file.id+'?uploadType=resumable':'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable';const h=new Headers({'Content-Type':'application/json; charset=UTF-8','X-Upload-Content-Type':'application/json','X-Upload-Content-Length':String(blob.size)});if(file){}else meta;const init=await driveFetch(initUrl,{method:file.id?'PATCH':'POST',headers:h,body:file.id?undefined:meta});const loc=init.headers.get('Location');if(!loc)throw new Error('アップロード先を取得できませんでした');r=await driveFetch(loc,{method:'PUT',headers:{'Content-Type':'application/json','Content-Length':String(blob.size)},body:blob});}
+ if(!r.ok)throw new Error('保存に失敗しました');setDriveStatus('☁️ Google Drive保存済み：'+new Date().toLocaleString('ja-JP'));toast('Google Driveへ保存しました');}catch(e){console.error(e);setDriveStatus('エラー：'+(e.message||e));toast('Google Drive保存に失敗しました')}}
+async function downloadDriveBackup(){try{setDriveStatus('最新データを確認中…');await driveAuth();const file=await findDriveBackup();if(!file.id){setDriveStatus('Google DriveにMy Travelデータがありません');toast('Google Driveデータがありません');return}const r=await driveFetch('https://www.googleapis.com/drive/v3/files/'+file.id+'?alt=media');const x=await r.json();if(!x.state?.trips)throw new Error('My Travelのバックアップではありません');if(!confirm('Google Driveの最新データで、この端末のデータを置き換えますか？'))return;state=x.state;save();if(db&&Array.isArray(x.files)){const tx=db.transaction('files','readwrite');tx.objectStore('files').clear();for(const a of x.files)tx.objectStore('files').put(a);await new Promise(res=>{tx.oncomplete=res;tx.onerror=res})}renderTrips();setDriveStatus('☁️ 最新データ取得：'+(file.modifiedTime?new Date(file.modifiedTime).toLocaleString('ja-JP'):'完了'));toast('Google Driveから最新データを取得しました')}catch(e){console.error(e);setDriveStatus('エラー：'+(e.message||e));toast('Google Drive取得に失敗しました')}}
+$('#homeLat').value=safeGet(HOME_LAT_KEY)||'';$('#homeLng').value=safeGet(HOME_LNG_KEY)||'';const hc=getHomeCoords();$('#homeCoordStatus').textContent=hc?'自宅座標：'+hc[0]+', '+hc[1]:'自宅座標は未設定です';$('#saveHomeCoords').onclick=()=>{if(setHomeCoords($('#homeLat').value,$('#homeLng').value)){const c=getHomeCoords();$('#homeCoordStatus').textContent='自宅座標：'+c[0]+', '+c[1];toast('自宅の座標を保存しました')}else toast('正しい自宅の緯度・経度を入力してください')};$('#googleClientId').value=driveState.clientId;$('#roleEditBtn').onclick=()=>{localStorage.setItem('mytravel-role','editor');updateRoleUI();toast('編集モードにしました')};$('#roleViewerBtn').onclick=()=>{localStorage.setItem('mytravel-role','viewer');updateRoleUI();toast('閲覧専用モードにしました')};$('#googleClientId').onchange=e=>driveState.clientId=e.target.value.trim();$('#driveConnectBtn').onclick=async()=>{try{await driveAuth();setDriveStatus('☁️ Google Drive接続済み');toast('Google Driveに接続しました')}catch(e){setDriveStatus('接続エラー：'+(e.message||e));toast('Google Drive接続に失敗しました')}};$('#driveUploadBtn').onclick=uploadDriveBackup;$('#driveDownloadBtn').onclick=downloadDriveBackup;updateRoleUI();$('#closeModal').onclick=close;$('#modal').onclick=e=>{if(e.target.id==='modal')close()};$('#quickAdd').onclick=()=>openTripForm();$('#homeBtn').onclick=()=>{show('home');renderTrips()};$('#backTrip').onclick=()=>show('tripView');$('#addItemBtn').onclick=()=>openItemForm();$('#locBtn').onclick=openCurrent;$('#routeBtn').onclick=route;
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');const v=b.dataset.tab;$('#itPanel').style.display=v==='it'?'block':'none';$('#dayPanel').style.display=v==='day'?'block':'none';$('#mapPanel').style.display=v==='map'?'block':'none';if(v==='map'){setTimeout(initMap,120)}if(v==='day')renderDay()});
+document.querySelectorAll('.bottom button[data-nav]').forEach(b=>b.onclick=()=>{if(b.dataset.nav==='home'){show('home');renderTrips()}else if(b.dataset.nav==='trip'){if(trip())show('tripView');else toast('先に旅行を選択してください')}else if(b.dataset.nav==='map'){if(trip()){show('tripView');setTimeout(()=>document.querySelector('[data-tab="map"]').click(),100)}else toast('先に旅行を開いてください')}else show('settings')});
+$('#exportBtn').onclick=async()=>{const files=await getAllFiles();const out={version:2,exportedAt:new Date().toISOString(),state,files};downloadBlob(JSON.stringify(out), 'my-travel-backup.json','application/json')};$('#importBtn').onclick=()=>{if(editGuard())$('#importFile').click()};$('#importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.state?.trips)throw 0;state=x.state;save();if(db&&Array.isArray(x.files)){const tx=db.transaction('files','readwrite');for(const a of x.files)tx.objectStore('files').put(a)}renderTrips();toast('復元しました')}catch{toast('復元に失敗しました')}};
+function getAllFiles(){return new Promise(res=>{const r=db.transaction('files').objectStore('files').getAll();r.onsuccess=()=>res(r.result||[])})}function downloadBlob(text,name,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('#icsBtn').onclick=()=>{const t=trip();if(!t){toast('旅行を選択してください');return}let s='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//MyTravel//JP\n';for(const i of t.items){if(!i.date)continue;const d=i.date.replaceAll('-','')+(i.time?('T'+i.time.replace(':','')+'00'):'T090000');s+=`BEGIN:VEVENT\nUID:${i.id}@mytravel\nDTSTART:${d}\nSUMMARY:${i.title.replaceAll(',','\\,')}\nDESCRIPTION:${(i.notes||'').replaceAll('\n','\\n')}\nEND:VEVENT\n`}s+='END:VCALENDAR';downloadBlob(s,'my-travel.ics','text/calendar');toast('ICSを作成しました')};
+$('#shareBtn').onclick=async()=>{const t=trip();if(!t){toast('旅行を選択してください');return}const text=`${t.name}\n${t.start||''} ～ ${t.end||''}\n予定 ${t.items.length}件`;if(navigator.share)await navigator.share({title:t.name,text}).catch(()=>{});else{await navigator.clipboard?.writeText(text);toast('共有内容をコピーしました')}};$('#notifyBtn').onclick=async()=>{if(!('Notification'in window)){toast('通知非対応です');return}const p=await Notification.requestPermission();toast(p==='granted'?'通知を許可しました':'通知は許可されませんでした')};$('#clearBtn').onclick=()=>{if(!editGuard())return;if(confirm('全データと関連資料を削除します。よろしいですか？')){state={trips:[],selectedTrip:null};save();if(db){const tx=db.transaction('files','readwrite');tx.objectStore('files').clear()}show('home');renderTrips();toast('削除しました')}};
+function scheduleCheck(){if(!('Notification'in window)||Notification.permission!=='granted')return;const now=Date.now();(trip()?.items||[]).forEach(i=>{if(i.remindAt&&new Date(i.remindAt).getTime()>now){const delay=new Date(i.remindAt).getTime()-now;setTimeout(()=>new Notification('My Travel: '+i.title,{body:`${i.date||''} ${i.time||''}\n予約番号: ${i.booking||'—'}`}),Math.min(delay,2147483647))}})}
+window.addEventListener('online',()=>{$('#net').textContent='オンライン';$('#net').classList.remove('off')});window.addEventListener('offline',()=>{$('#net').textContent='オフライン';$('#net').classList.add('off')});
+const APP_VERSION='v33';
+let swRegistration=null;
+let swReloading=false;
+function setUpdateStatus(t){const el=$('#updateStatus');if(el)el.textContent=t}
+async function clearMyTravelCaches(){if(!('caches'in window))return 0;let n=0;for(const k of await caches.keys()){if(k.startsWith('mytravel-cache-')){if(await caches.delete(k))n++}}return n}
+async function checkForAppUpdate(){
+  if(!('serviceWorker'in navigator)){setUpdateStatus('Service Worker非対応：ブラウザの再読み込みを使用してください');return}
+  try{if(swRegistration){await swRegistration.update();setUpdateStatus('最新版を確認しました：'+APP_VERSION)}else{setUpdateStatus('更新機能を準備中…')}}catch(e){console.warn(e);setUpdateStatus('更新確認に失敗しました。もう一度お試しください')}
+}
+async function forceAppUpdate(){
+  if(!confirm('最新版を確認して画面を更新します。旅行データ・PDF・スクリーンショットは削除しません。よろしいですか？'))return;
+  try{
+    setUpdateStatus('最新版を確認中…');
+    await clearMyTravelCaches();
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r=>r.unregister()));
+    }
+    sessionStorage.setItem('mytravel-update-requested','1');
+    setUpdateStatus('更新しています…');
+    location.reload();
+  }catch(e){console.warn(e);setUpdateStatus('更新に失敗しました。通常の再読み込みをお試しください')}
+}
+$('#updateAppBtn').onclick=forceAppUpdate;
+if('serviceWorker'in navigator)window.addEventListener('load',async()=>{
+  try{
+    swRegistration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+    await swRegistration.update();
+    swRegistration.addEventListener('updatefound',()=>{
+      const installing=swRegistration.installing;
+      if(!installing)return;
+      installing.addEventListener('statechange',()=>{
+        if(installing.state==='installed' && navigator.serviceWorker.controller){
+          setUpdateStatus('新しい版を取得しました。更新中…');
+        }
+      });
+    });
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(swReloading)return;
+      swReloading=true;
+      location.reload();
+    });
+    setUpdateStatus('現在のバージョン：'+APP_VERSION+'（最新版を確認済み）');
+  }catch(e){console.warn('Service Worker registration failed',e);setUpdateStatus('現在のバージョン：'+APP_VERSION)}
+});
+renderTrips(); scheduleCheck();
+function refreshPastStyles(){if(document.querySelector('#dayPanel')&&typeof renderDay==='function'){try{renderDay()}catch(e){}}if(typeof renderTrip==='function'&&document.querySelector('#itPanel')){try{renderTrip()}catch(e){}}}
+setInterval(refreshPastStyles,60000);
+</script></body></html>

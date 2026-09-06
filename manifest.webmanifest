@@ -1,0 +1,10 @@
+{
+  "name": "My Travel 旅行管理",
+  "short_name": "My Travel",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f8fb",
+  "theme_color": "#0878bd",
+  "lang": "ja",
+  "description": "旅行の行程・航空便・ホテル・予約番号・地図・PDF・スクリーンショットをまとめて管理。オフライン利用対応。"
+}
