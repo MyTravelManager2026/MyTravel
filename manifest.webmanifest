@@ -1,7 +1,7 @@
 {
   "name": "My Travel 旅行管理",
   "short_name": "My Travel",
-  "start_url": "./",
+  "start_url": "./My%20Travel.html",
   "display": "standalone",
   "background_color": "#f4f8fb",
   "theme_color": "#0878bd",
