@@ -1,7 +1,7 @@
-const APP_VERSION = 'v45';
-const CACHE_NAME = 'mytravel-cache-v45';
+const APP_VERSION = 'v47';
+const CACHE_NAME = 'mytravel-cache-v47';
 const APP_SHELL = ['./My%20Travel.html', './manifest.webmanifest'];
-const EXTERNAL_CACHE = 'mytravel-external-v45';
+const EXTERNAL_CACHE = 'mytravel-external-v47';
 
 self.addEventListener('install', event => {
   event.waitUntil(
